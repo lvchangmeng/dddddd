@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/maven_alibaba_dao/maven_alibaba_dao.iml" filepath="$PROJECT_DIR$/maven_alibaba_dao/maven_alibaba_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_alibaba_domain/maven_alibaba_domain.iml" filepath="$PROJECT_DIR$/maven_alibaba_domain/maven_alibaba_domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_alibaba_service/maven_alibaba_service.iml" filepath="$PROJECT_DIR$/maven_alibaba_service/maven_alibaba_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_alibaba_web/maven_alibaba_web.iml" filepath="$PROJECT_DIR$/maven_alibaba_web/maven_alibaba_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_day02_parent.iml" filepath="$PROJECT_DIR$/maven_day02_parent.iml" />
+    </modules>
+  </component>
+</project>

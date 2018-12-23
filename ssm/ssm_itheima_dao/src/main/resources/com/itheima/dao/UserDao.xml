@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.UserDao">
+
+    <select id="findCount" resultType="int">
+        select count(1) from user
+        <where>
+            <if test="user!=null">
+                <if test="user.username!=null">
+                    or username like '%${user.username}%'
+                </if>
+
+                <if test="user.address!=null">
+                    or address like '%${user.address}%'
+                </if>
+
+                <if test="user.email!=null">
+                    or email like '%${user.email}%'
+                </if>
+
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findAll" parameterType="pageBean" resultType="user">
+        <!--
+            limit : start  rows
+                第一个参数:(当前页码-1)*每页显示条数
+                第二个参数:每页显示的条数
+        -->
+        select * from user
+        <where>
+            <if test="user!=null">
+                <if test="user.username!=null">
+                    or username like '%${user.username}%'
+                </if>
+
+                <if test="user.address!=null">
+                    or address like '%${user.address}%'
+                </if>
+
+                <if test="user.email!=null">
+                    or email like '%${user.email}%'
+                </if>
+
+            </if>
+
+        </where>
+        limit #{start},#{rows}
+    </select>
+
+    <select id="findLogin" resultType="user" parameterType="user">
+        select * from user where username = #{username} and pwd = #{pwd}
+    </select>
+
+    <insert id="saveUser" parameterType="user">
+        insert into user (username,pwd,sex,age,address,qq,email) values(#{username},#{pwd},#{sex},#{age},#{address},#{qq},#{email})
+    </insert>
+
+    <delete id="delUser" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+
+    <update id="updateUser" parameterType="user">
+        update user set username = #{username},pwd = #{pwd},age = #{age},birthday = #{birthday},sex = #{sex},address = #{address},qq = #{qq},email = #{email} where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="int" resultType="user">
+        select * from user where id = #{id}
+    </select>
+
+</mapper>

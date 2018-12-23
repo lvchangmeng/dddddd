@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			    http://www.springframework.org/schema/beans/spring-beans.xsd
+			    http://www.springframework.org/schema/context
+			    http://www.springframework.org/schema/context/spring-context.xsd
+			    http://www.springframework.org/schema/aop
+			    http://www.springframework.org/schema/aop/spring-aop.xsd
+			    http://www.springframework.org/schema/tx
+			    http://www.springframework.org/schema/tx/spring-tx.xsd
+			    http://www.springframework.org/schema/mvc
+			    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <context:component-scan base-package="com.alibaba"></context:component-scan>
+
+    <!--开始配置dao层-->
+
+    <!--配置数据源-->
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+            <property name="url" value="jdbc:mysql:///maven"></property>
+            <property name="username" value="root"></property>
+            <property name="password" value="root"></property>
+        </bean>
+
+    <!--将mybatis交给spring管理-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+        <!--起别名-->
+        <property name="typeAliasesPackage" value="com.alibaba.domaim"></property>
+    </bean>
+    <!--扫描接口下的方法,生成代理对象交给spring容器-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.alibaba.dao"></property>
+    </bean>
+
+    <!--dao层配置结束-->
+
+    <!--开始配置service层-->
+
+    <!--声明事务式管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--创建事务通知bean对象-->
+    <tx:advice id="myAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" read-only="false" propagation="REQUIRED" isolation="DEFAULT"/>
+            <tx:method name="find*" read-only="true" propagation="SUPPORTS"></tx:method>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置aop-->
+    <aop:config>
+        <aop:pointcut id="pt1" expression="execution(* com.alibaba.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="pt1"/>
+    </aop:config>
+    <!--service层配置结束-->
+
+
+</beans>
